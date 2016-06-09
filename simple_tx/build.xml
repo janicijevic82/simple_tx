@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="postbuild" name="test">
+	<property name="project.name" value="simple_tx"/>
+	<property name="project.path" value="F:\dw1000_api\apps\test_tx"/>
+	<property name="output.name" value="simple_tx"/>
+	<property name="output.path" value="F:\dw1000_api\apps\test_tx\evb1000"/>
+	<property name="project.debug" value="${output.path}/Debug"/>
+	<property name="project.obj" value="${output.path}/Debug/obj"/>
+	<property name="project.bin" value="${output.path}/Debug/bin"/>
+	<property name="target.name" value="EVB1000"/>
+	<property name="chip.name" value="STM32F105RC"/>
+
+	<!-- associate current path to the link file path-->
+	<dirname file="F:/dw1000_api/linkers/stm32_flash_256k_ram_64k.ld" property="linkdir"/>
+
+	<target depends="compile" name="postbuild">
+	   <exec executable="${gcc.home}\arm-none-eabi-objcopy.exe">
+	      <arg value="-O"/>
+	      <arg value="binary"/>
+	      <arg value="${project.bin}\${output.name}.elf"/>
+	      <arg value="${project.bin}\${output.name}.bin"/>
+	   </exec>
+	   <exec executable="${gcc.home}\arm-none-eabi-objcopy.exe">
+		  <arg value="-O"/>
+		  <arg value="ihex"/>
+		  <arg value="${project.bin}\${output.name}.elf"/>
+		  <arg value="${project.bin}\${output.name}.hex"/>
+	   </exec>
+	   <exec dir="${project.bin}" executable="${gcc.home}\arm-none-eabi-size.exe">
+		   <arg value="${output.name}.elf"/>
+	   </exec>
+	</target>
+
+	<taskdef resource="cpptasks.tasks"/>
+	<target name="compile">
+		<mkdir dir="${project.bin}"/>
+		<mkdir dir="${project.obj}"/>
+		<cc debug="true" incremental="0" objdir="${project.obj}" outfile="${project.bin}/${output.name}.elf" outtype="executable" subsystem="console">
+			<!-- compile all the c source file in the project -->
+			<fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_i2c.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/misc.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/startup_stm32f10x_cl.S"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/platform/stm32f10x_it.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/decadriver/deca_device.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_flash.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/platform/deca_mutex.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_wwdg.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_sdio.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_iwdg.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/CMSIS/CM3/CoreSupport/core_cm3.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_crc.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_cec.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_can.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dac.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/platform/lcd.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_spi.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_rtc.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_fsmc.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/platform/deca_spi.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/platform/port.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_bkp.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/decadriver/deca_params_init.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/platform/deca_sleep.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dbgmcu.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_pwr.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/decadriver/deca_range_tables.c"/>
+      <fileset casesensitive="false" file="F:/dw1000_api/apps/test_tx/main.c"/>
+      <project outfile="${output.path}/${output.name}.elf" overwrite="true" type="xcode"/>
+			<defineset>
+			<define name="STM32F105RC"/>
+        <define name="STM32F10X_CL"/>
+        <define name="USE_STDPERIPH_DRIVER"/>
+        <define name="__ASSEMBLY__"/>
+      </defineset>
+      <includepath path="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver/inc"/>
+      <includepath path="F:/dw1000_api/Libraries/STM32F10x_StdPeriph_Driver"/>
+      <includepath path="F:/dw1000_api/Libraries/CMSIS/CM3"/>
+      <includepath path="F:/dw1000_api/Libraries/CMSIS/CM3/DeviceSupport/ST"/>
+      <includepath path="F:/dw1000_api/apps/test_tx"/>
+      <includepath path="F:/dw1000_api/platform"/>
+      <includepath path="F:/dw1000_api/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x"/>
+      <includepath path="F:/dw1000_api/Libraries/CMSIS/CM3/CoreSupport"/>
+      <includepath path="F:/"/>
+      <includepath path="F:/dw1000_api/decadriver"/>
+      <includepath path="F:/dw1000_api"/>
+      <includepath path="F:/dw1000_api/Libraries/CMSIS"/>
+      <includepath path="F:/dw1000_api/Libraries/CMSIS/CM3/DeviceSupport"/>
+      <includepath path="F:/dw1000_api/Libraries"/>
+      <compilerarg value="-mcpu=cortex-m3"/>
+      <compilerarg value="-mthumb"/>
+      <compilerarg value="-Wall"/>
+      <compilerarg value="-ffunction-sections"/>
+      <compilerarg value="-g"/>
+      <compilerarg value="-O0"/>
+      <compilerarg value="-ffunction-sections"/>
+      <compilerarg value="-fdata-sections"/>
+      <compilerarg value="-c"/>
+      <linkerarg value="-mcpu=cortex-m3"/>
+      <linkerarg value="-mthumb"/>
+      <linkerarg value="-g"/>
+      <linkerarg value="-Map=simple_tx.map"/>
+      <linkerarg value="-O0"/>
+      <linkerarg value="--gc-sections"/>
+      <linkerarg value="-lm"/>
+      <linkerarg value="-lgcc"/>
+      <linkerarg value="-lc"/>
+      <linkerarg value="-lnosys"/>
+      <linkerarg value="-LF:/dw1000_api/linkers"/>
+      <linkerarg value="-TF:/dw1000_api/linkers/stm32_flash_256k_ram_64k.ld"/>
+		</cc>
+	</target>
+
+	<target name="clean">
+		<delete dir="${project.bin}"/>
+		<delete dir="${project.obj}"/>
+		<delete dir="${project.debug}"/>
+		<delete dir="${output.path}/${output.name}.elf.xcodeproj"/>
+	</target>
+
+	<target depends="clean" name="rebuild">
+		<antcall target="postbuild"/>
+	</target>
+
+</project>
